@@ -1,4 +1,6 @@
-// Microphone.js
+// Microphone.tsx
+"use client";
+
 import React, { useState, useEffect, useContext, useRef } from 'react';
 import { useRecordVoice } from "@/app/(speech)/hooks/useRecordVoice";
 import { IconMicrophone } from "@/app/(speech)/app/components/IconMicrophone";

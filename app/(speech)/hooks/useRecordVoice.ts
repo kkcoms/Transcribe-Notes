@@ -57,14 +57,12 @@ export const useRecordVoice = (onTranscriptionComplete: any) => {
 
     const initialMediaRecorder = (stream: any) => {
         const mediaRecorder = new MediaRecorder(stream);
-        let isRecording = false; // You'll need to set this appropriately in your code
-        const callback = (peak: number) => {
-            console.log(peak);
-        }; // Replace this with your actual callback
+        let isRecording = false;
+        // const callback = (peak: number) => {};
 
         mediaRecorder.onstart = () => {
             isRecording = true;
-            createMediaStream(stream, isRecording, callback);
+            createMediaStream(stream, isRecording, (peak: number) => {});
             chunks.current = [];
             console.log("useRecordVoice.js - MediaRecorder started");
         };

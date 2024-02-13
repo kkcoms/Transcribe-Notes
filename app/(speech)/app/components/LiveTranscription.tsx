@@ -11,7 +11,6 @@ declare global {
     }
 }
 
-
 const LiveTranscriptionMicrophone = () => {
   const [isRecording, setIsRecording] = useState(false);
   const accumulatedFinalTranscript = useRef(""); // Ref to keep track of the accumulated final transcript

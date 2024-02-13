@@ -24,11 +24,11 @@ const Editor = ({
   const { edgestore } = useEdgeStore();
   const { liveTranscription, finalTranscription, currentSessionId } = useContext(TranscriptionContext);
 
-  console.log("resolvedTheme:", resolvedTheme);
-  console.log("edgestore:", edgestore);
-  console.log("liveTranscription:", liveTranscription);
-  console.log("finalTranscription:", finalTranscription);
-  console.log("currentSessionId:", currentSessionId);
+  // console.log("resolvedTheme:", resolvedTheme);
+  // console.log("edgestore:", edgestore);
+  // console.log("liveTranscription:", liveTranscription);
+  // console.log("finalTranscription:", finalTranscription);
+  // console.log("currentSessionId:", currentSessionId);
 
   const editor: BlockNoteEditor = useBlockNote({
     editable,
