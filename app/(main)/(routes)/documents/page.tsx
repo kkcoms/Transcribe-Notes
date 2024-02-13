@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 
 import { api } from "@/convex/_generated/api";
 import { Button } from "@/components/ui/button";
+import { Id } from "@/convex/_generated/dataModel";
 
 const DocumentsPage = () => {
     const router = useRouter();
