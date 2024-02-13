@@ -1,6 +1,7 @@
+//toolbar.tsx
 "use client";
 
-import { ElementRef, useRef, useState } from "react";
+import { ElementRef, useRef, useState, useEffect } from "react";
 import { ImageIcon, Smile, X } from "lucide-react";
 import { useMutation } from "convex/react";
 import TextareaAutosize from "react-textarea-autosize";
@@ -28,6 +29,12 @@ export const Toolbar = ({
   const update = useMutation(api.documents.update);
   const removeIcon = useMutation(api.documents.removeIcon);
 
+
+  // State to hold the note creation date and time
+  const noteCreationDateTime = initialData.noteCreationDateTime 
+    ? new Date(initialData.noteCreationDateTime) 
+    : null;
+
   const coverImage = useCoverImage();
 
   const enableInput = () => {
@@ -46,7 +53,7 @@ export const Toolbar = ({
     setValue(value);
     update({
       id: initialData._id,
-      title: value || "Untitled"
+      title: value || "Name your note"
     });
   };
 
@@ -135,7 +142,16 @@ export const Toolbar = ({
           onClick={enableInput}
           className="pb-[11.5px] text-5xl font-bold break-words outline-none text-[#3F3F3F] dark:text-[#CFCFCF]"
         >
-          {initialData.title}
+          {initialData.title && (
+            <div className= "mb-1">
+              {initialData.title}
+            </div>
+          )}
+          {noteCreationDateTime && (
+            <div className="text-sm text-gray-500">
+      Created on: {noteCreationDateTime.toLocaleDateString()} at {noteCreationDateTime.toLocaleTimeString([], { hour: 'numeric', minute: 'numeric' })}
+            </div>
+          )}
         </div>
       )}
     </div>

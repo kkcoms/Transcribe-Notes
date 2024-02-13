@@ -1,3 +1,4 @@
+//documents.ts
 import { v } from "convex/values";
 
 import { mutation, query } from "./_generated/server";
@@ -86,7 +87,8 @@ export const getSidebar = query({
 export const create = mutation({
   args: {
     title: v.string(),
-    parentDocument: v.optional(v.id("documents"))
+    parentDocument: v.optional(v.id("documents")),
+
   },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
@@ -103,6 +105,7 @@ export const create = mutation({
       userId,
       isArchived: false,
       isPublished: false,
+      noteCreationDateTime: new Date().toISOString(), // Use the current date and time
     });
 
     return document;
@@ -277,7 +280,7 @@ export const update = mutation({
     content: v.optional(v.string()),
     coverImage: v.optional(v.string()),
     icon: v.optional(v.string()),
-    isPublished: v.optional(v.boolean())
+    isPublished: v.optional(v.boolean()),
   },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
