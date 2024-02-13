@@ -16,9 +16,11 @@ const DocumentsPage = () => {
     const create = useMutation(api.documents.create);
 
     const onCreate = () => {
-        const promise = create({ title: "Untitled" }).then((documentId) =>
-            router.push(`/documents/${documentId}`)
-        );
+    const promise = create({
+      title: "Untitled",
+    } as { parentDocument?: Id<"documents"> | undefined; title: string }) // Update the type definition of the create mutation
+
+      .then((documentId) => router.push(`/documents/${documentId}`))
 
         toast.promise(promise, {
             loading: "Creating a new note...",
