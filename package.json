@@ -14,6 +14,7 @@
     "@clerk/clerk-react": "^4.30.5",
     "@edgestore/react": "^0.1.6",
     "@edgestore/server": "^0.1.6",
+    "@editorjs/editorjs": "^2.29.0",
     "@radix-ui/react-alert-dialog": "^1.0.5",
     "@radix-ui/react-avatar": "^1.0.4",
     "@radix-ui/react-dialog": "^1.0.5",
