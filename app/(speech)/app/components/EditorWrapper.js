@@ -1,21 +1,17 @@
 // EditorWrapper.js
 "use client";
-import React, { useState } from 'react';
+import React from 'react';
 import { Microphone } from 'app/(speech)/app/components/Microphone.js';
-import TranscriptionContext from 'app/(speech)/app/components/TranscriptionContext.js';
-import LiveTranscriptionMicrophone from 'app/(speech)/app/components/LiveTranscription.tsx';
-
 
 const EditorWrapper = ({ post }) => {
-  const [transcription, setTranscription] = useState('');
-
   console.log('EditorWrapper.js:', 'Initializing EditorWrapper');
 
+  // No TranscriptionContext.Provider should be here since you already have TranscriptionProvider at the root level
   return (
-    <TranscriptionContext.Provider value={{ transcription, setTranscription }}>
+    <>
       <Microphone /> 
-      {/*<LiveTranscriptionMicrophone /> */} 
-    </TranscriptionContext.Provider>
+      {/* Other components that depend on TranscriptionContext can be here */}
+    </>
   );
 };
 

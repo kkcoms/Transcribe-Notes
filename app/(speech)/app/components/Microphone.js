@@ -2,12 +2,13 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
 import { useRecordVoice } from "app/(speech)/hooks/useRecordVoice.js";
 import { IconMicrophone } from "app/(speech)/app/components/IconMicrophone.js";
-import TranscriptionContext from 'app/(speech)/app/components/TranscriptionContext.js';
+import TranscriptionContext from 'app/(speech)/app/components/TranscriptionContext.tsx';
+
 
 const Microphone = () => {
   const [isRecording, setIsRecording] = useState(false);
   const accumulatedFinalTranscript = useRef("");
-  const { setLiveTranscription, setFinalTranscription } = useContext(TranscriptionContext);
+  const { setLiveTranscription, setFinalTranscription, generateNewSessionId } = useContext(TranscriptionContext);
   const recognitionActive = useRef(false);
 
   const { startRecording, stopRecording } = useRecordVoice(setFinalTranscription);
@@ -21,13 +22,17 @@ const Microphone = () => {
       accumulatedFinalTranscript.current = "";
       if (recognition) {
         recognition.start();
+        generateNewSessionId(); // Generate a new session ID for each new recording
         startRecording();
+        setFinalTranscription(""); // Clear the final transcription        
+
       }
     } else {
       if (recognition) {
         recognition.abort();
         stopRecording();
         setLiveTranscription("");
+        setFinalTranscription(""); // Clear the final transcription        
       }
     }
   };
