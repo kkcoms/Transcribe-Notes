@@ -32,10 +32,30 @@ const Microphone = () => {
         recognition.abort();
         stopRecording();
         setLiveTranscription("");
+        sendTranscriptionForSummarization(accumulatedFinalTranscript.current); // Trigger API call
         setFinalTranscription(""); // Clear the final transcription        
       }
     }
   };
+
+  const sendTranscriptionForSummarization = async (finalTranscription) => {
+    try {
+      const response = await fetch('/api/summarize', { // Adjust the URL to match your API endpoint
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ messages: [{ content: finalTranscription }] }),
+      });
+      if (!response.ok) throw new Error('Network response was not ok');
+      const data = await response.json();
+      console.log('Summarization result:', data);
+      // Here, you could update the state or context with the summarization result if needed
+    } catch (error) {
+      console.error('Error sending transcription for summarization:', error);
+    }
+  };
+  
 
   useEffect(() => {
     if (recognition) {
