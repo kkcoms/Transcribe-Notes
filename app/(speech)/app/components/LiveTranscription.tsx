@@ -4,18 +4,10 @@ import React, { useState, useEffect, useContext, useRef } from 'react';
 import TranscriptionContext from './TranscriptionContext';
 import EditorJS from '@editorjs/editorjs';
 
-declare global {
-    interface Window {
-        webkitSpeechRecognition: any;
-        SpeechRecognition: any;
-    }
-}
-
 const LiveTranscriptionMicrophone = () => {
   const [isRecording, setIsRecording] = useState(false);
   const accumulatedFinalTranscript = useRef(""); // Ref to keep track of the accumulated final transcript
-  const context: any = useContext(TranscriptionContext);
-  const { setTranscription } = context;
+  const { setTranscription } = useContext(TranscriptionContext);
   const editorRef = useRef<EditorJS>(null);
 
   // Initialize webkitSpeechRecognition only if running in the browser
@@ -25,9 +17,9 @@ const LiveTranscriptionMicrophone = () => {
     if (recognition) {
       recognition.continuous = true;
       recognition.interimResults = true;
-      recognition.lang = 'en-US';
+      recognition.lang = 'es-MX';
 
-      recognition.onresult = (event: any) => {
+      recognition.onresult = (event) => {
         let interimTranscript = '';
         for (let i = event.resultIndex; i < event.results.length; ++i) {
           if (event.results[i].isFinal) {

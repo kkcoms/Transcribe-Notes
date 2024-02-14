@@ -1,4 +1,4 @@
-const getPeakLevel = (analyzer: any) => {
+const getPeakLevel = (analyzer) => {
   const array = new Uint8Array(analyzer.fftSize);
   analyzer.getByteTimeDomainData(array);
   return (
@@ -7,7 +7,7 @@ const getPeakLevel = (analyzer: any) => {
   );
 };
 
-const createMediaStream = (stream: any, isRecording: any, callback: any) => {
+const createMediaStream = (stream, isRecording, callback) => {
   const context = new AudioContext();
   const source = context.createMediaStreamSource(stream);
   const analyzer = context.createAnalyser();
