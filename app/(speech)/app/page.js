@@ -1,4 +1,4 @@
-import  Microphone  from "@/app/(speech)/app/components/Microphone";
+import { Microphone } from "app/(speech)/src/app/components/Microphone.js";
 
 export default function Home() {
   return (
