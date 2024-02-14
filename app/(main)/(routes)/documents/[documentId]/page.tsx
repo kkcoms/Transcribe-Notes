@@ -12,7 +12,7 @@ import { Toolbar } from "@/components/toolbar";
 import { Cover } from "@/components/cover";
 import { Skeleton } from "@/components/ui/skeleton";
 import Editor from '@/components/editor'; // Import Editor here as well, if needed
-import Microphone  from '@/app/(speech)/app/components/Microphone';
+import { Microphone } from '@/app/(speech)/app/components/Microphone';
 
 interface DocumentIdPageProps {
   params: {
