@@ -61,7 +61,7 @@ const Microphone = () => {
     if (recognition) {
       recognition.continuous = true;
       recognition.interimResults = true;
-      recognition.lang = 'es-MX';
+      recognition.lang = 'en-US';
 
       recognition.onresult = (event) => {
         if (!recognitionActive.current) return;
