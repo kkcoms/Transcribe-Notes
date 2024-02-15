@@ -7,7 +7,7 @@ import { BlockNoteEditor, PartialBlock } from "@blocknote/core";
 import { BlockNoteView, useBlockNote } from "@blocknote/react";
 import "@blocknote/core/style.css";
 import { useEdgeStore } from "@/lib/edgestore";
-import TranscriptionContext from 'app/(speech)/app/components/TranscriptionContext';
+import TranscriptionContext  from "@/app/(speech)/app/components/TranscriptionContext"; // This is the corrected import path
 
 interface EditorProps {
   onChange: (value: string) => void;

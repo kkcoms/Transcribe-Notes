@@ -7,6 +7,7 @@ import { useMutation, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Id } from '@/convex/_generated/dataModel';
 
+
 declare global {
   interface Window {
       webkitSpeechRecognition: any;
@@ -88,7 +89,7 @@ const Microphone: React.FC<MicrophoneProps> = ({ documentId }) => {
     if (recognition) {
       recognition.continuous = true;
       recognition.interimResults = true;
-      recognition.lang = 'en-US';
+      recognition.lang = 'es-Mx';
 
       recognition.onresult = (event: any) => {
         if (!recognitionActive.current) return;

@@ -6,9 +6,9 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-export const config = {
-  runtime: "experimental-edge",
-};
+// Updated configuration style for Edge functions
+export const runtime = "experimental-edge";
+
 
 export async function POST(req: NextRequest) {
   try {
@@ -55,9 +55,34 @@ export async function POST(req: NextRequest) {
 
     console.log("Sending to OpenAI:", systemAndUserMessage);
 
+    
+
     const response = await openai.chat.completions.create({
       model: "gpt-3.5-turbo-16k",
-      messages: systemAndUserMessage,
+      messages: [
+        {
+          role: "system",
+          content: `Title the summary with an <h1> tag and provide a brief summary of the user's message, focusing on the main points and action items. 
+          Then, follow this with a detailed breakdown structured in HTML. 
+          The detailed summary should be well-structured using HTML tags such as <h1>, <h2>, <ul>, <ol>, <li>, <strong>, <em>, <blockquote>, <a>, <img>, and <br> for line breaks. 
+          Use classes for styling like 'class="text-3xl font-bold"' for headers, and 'class="space-y-4"' to space out elements. 
+          Keep the summary concise, informative, and remember to maintain the original language of the user's message.
+          For example, if the message is in Spanish, the response should also be in Spanish.
+          Here’s an example of the structure in HTML, including line breaks and styling: 
+          <div class="max-w-3xl space-y-4">
+            <h1 class="text-3xl sm:text-5xl md:text-6xl font-bold">Main Heading</h1>
+            <h2 class="text-base sm:text-xl md:text-2xl font-medium">
+              Subheading<br /><br />
+              Additional content here.
+            </h2>
+          </div>
+          Adapt the content structure to match the user's original message and format it accordingly in HTML. Ensure that line breaks (<br />) are used to create space between elements where necessary.`,
+        },
+        {
+          role: "user",
+          content: lastUserMessage.content,
+        },
+      ],
       max_tokens: 1200,
     });
 
