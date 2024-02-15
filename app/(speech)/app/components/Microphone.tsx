@@ -5,6 +5,7 @@ import { IconMicrophone } from "@/app/(speech)/app/components/IconMicrophone";
 import TranscriptionContext from "./TranscriptionContext";
 import { useMutation, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
+import { Id } from '@/convex/_generated/dataModel';
 
 declare global {
   interface Window {
@@ -21,7 +22,7 @@ const Microphone: React.FC<MicrophoneProps> = ({ documentId }) => {
   const saveSummarizationResult = useMutation(api.documents.saveSummarizationResult);
 
   // Assuming you have a query defined in your Convex functions to fetch the summarization result
-  const fetchedSummarizationResult = useQuery(api.documents.getSummarizationResult, documentId ? { id: documentId } : null);
+  const fetchedSummarizationResult = useQuery(api.documents.getSummarizationResult, documentId ? { id: documentId as Id<"documents"> } : "skip");
 
   useEffect(() => {
     if (fetchedSummarizationResult) {
@@ -76,7 +77,7 @@ const Microphone: React.FC<MicrophoneProps> = ({ documentId }) => {
       const data = await response.json();
       console.log('Summarization result:', data);
       setSummarizationResult(data); // Update the summarization result
-      saveSummarizationResult({ id: documentId, summarizationResult: data.data });
+      saveSummarizationResult({ id: documentId as Id<"documents">, summarizationResult: data.data });
     } catch (error) {
       console.error('Error sending transcription for summarization:', error);
     }
