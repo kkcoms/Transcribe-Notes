@@ -24,7 +24,7 @@ export async function POST(req) {
     fs.mkdirSync(tmpDir, { recursive: true });
   }
   
-  const filePath = path.join(tmpDir, 'input.wav');
+  const filePath = path.join(tmpDir, 'input.mp3');
 
   try {
     fs.writeFileSync(filePath, audio);

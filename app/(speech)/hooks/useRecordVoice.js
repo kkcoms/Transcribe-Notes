@@ -67,7 +67,7 @@ export const useRecordVoice = (onTranscriptionComplete) => {
     };
 
     mediaRecorder.onstop = () => {
-      const audioBlob = new Blob(chunks.current, { type: "audio/wav" });
+      const audioBlob = new Blob(chunks.current, { type: "audio/mp3" });
       blobToBase64(audioBlob, getText);
       console.log("useRecordVoice.js - MediaRecorder stopped");
     };
