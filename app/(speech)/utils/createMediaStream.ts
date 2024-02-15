@@ -1,4 +1,4 @@
-const getPeakLevel = (analyzer) => {
+const getPeakLevel = (analyzer: AnalyserNode): number => {
   const array = new Uint8Array(analyzer.fftSize);
   analyzer.getByteTimeDomainData(array);
   return (
@@ -7,12 +7,16 @@ const getPeakLevel = (analyzer) => {
   );
 };
 
-const createMediaStream = (stream, isRecording, callback) => {
+const createMediaStream = (
+  stream: MediaStream,
+  isRecording: boolean,
+  callback: (peak: number) => void
+): void => {
   const context = new AudioContext();
   const source = context.createMediaStreamSource(stream);
   const analyzer = context.createAnalyser();
   source.connect(analyzer);
-  const tick = () => {
+  const tick = (): void => {
     const peak = getPeakLevel(analyzer);
     if (isRecording) {
       callback(peak);
@@ -22,4 +26,4 @@ const createMediaStream = (stream, isRecording, callback) => {
   tick();
 };
 
-export { createMediaStream }
+export { createMediaStream };

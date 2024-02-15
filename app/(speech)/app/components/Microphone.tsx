@@ -1,11 +1,18 @@
-// Microphone.js
+// Microphone.tsx
 import React, { useState, useEffect, useContext, useRef } from 'react';
-import { useRecordVoice } from "app/(speech)/hooks/useRecordVoice.js";
-import { IconMicrophone } from "app/(speech)/app/components/IconMicrophone.js";
-import TranscriptionContext from 'app/(speech)/app/components/TranscriptionContext.tsx';
+import { useRecordVoice } from "@/app/(speech)/hooks/useRecordVoice";
+import { IconMicrophone } from "@/app/(speech)/app/components/IconMicrophone";
+import TranscriptionContext from "./TranscriptionContext";
+
+declare global {
+  interface Window {
+      webkitSpeechRecognition: any;
+      SpeechRecognition: any;
+  }
+}
 
 
-const Microphone = () => {
+const Microphone: React.FC = () => {
   const [isRecording, setIsRecording] = useState(false);
   const accumulatedFinalTranscript = useRef("");
   const { setLiveTranscription, setFinalTranscription, generateNewSessionId } = useContext(TranscriptionContext);
@@ -24,8 +31,7 @@ const Microphone = () => {
         recognition.start();
         generateNewSessionId(); // Generate a new session ID for each new recording
         startRecording();
-        setFinalTranscription(""); // Clear the final transcription        
-
+        setFinalTranscription(""); // Clear the final transcription
       }
     } else {
       if (recognition) {
@@ -33,12 +39,12 @@ const Microphone = () => {
         stopRecording();
         setLiveTranscription("");
         sendTranscriptionForSummarization(accumulatedFinalTranscript.current); // Trigger API call
-        setFinalTranscription(""); // Clear the final transcription        
+        setFinalTranscription(""); // Clear the final transcription
       }
     }
   };
 
-  const sendTranscriptionForSummarization = async (finalTranscription) => {
+  const sendTranscriptionForSummarization = async (finalTranscription: string) => {
     try {
       const response = await fetch('/api/summarize', { // Adjust the URL to match your API endpoint
         method: 'POST',
@@ -55,7 +61,6 @@ const Microphone = () => {
       console.error('Error sending transcription for summarization:', error);
     }
   };
-  
 
   useEffect(() => {
     if (recognition) {
@@ -63,7 +68,7 @@ const Microphone = () => {
       recognition.interimResults = true;
       recognition.lang = 'en-US';
 
-      recognition.onresult = (event) => {
+      recognition.onresult = (event: any) => {
         if (!recognitionActive.current) return;
 
         let interimTranscript = '';
@@ -84,9 +89,8 @@ const Microphone = () => {
     }
   }, [recognition]);
 
-
   // Your existing button style logic
-  const buttonStyle = {
+  const buttonStyle: React.CSSProperties = {
     position: 'fixed',
     bottom: '20px',
     left: '50%',
@@ -104,9 +108,10 @@ const Microphone = () => {
     zIndex: 1000,
     animation: isRecording ? 'pulse 1s infinite' : 'gentlePulse 2s infinite', // Apply animation based on state
   };
+
   return (
     <>
-     <style>
+      <style>
         {`
           @keyframes pulse {
             0% { transform: scale(1); }
@@ -123,10 +128,11 @@ const Microphone = () => {
       <div style={buttonStyle} onClick={toggleRecording}>
         <IconMicrophone />
       </div>
-            {/*<div className="live-transcription-output">
+      {/*<div className="live-transcription-output">
         <p>{accumulatedFinalTranscript.current}</p>
       </div>*/}
     </>
   );
 };
+
 export { Microphone };
