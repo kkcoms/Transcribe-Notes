@@ -106,10 +106,68 @@ export const create = mutation({
       isArchived: false,
       isPublished: false,
       noteCreationDateTime: new Date().toISOString(), // Use the current date and time
+      summarizationResult: "", // Initialize the summarization result
     });
 
     return document;
   }
+});
+
+export const saveSummarizationResult = mutation({
+  args: {
+    id: v.id("documents"),
+    summarizationResult: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+
+    if (!identity) {
+      throw new Error("Unauthenticated");
+    }
+
+    const userId = identity.subject;
+
+    const existingDocument = await ctx.db.get(args.id);
+
+    if (!existingDocument) {
+      throw new Error("Not found");
+    }
+
+    if (existingDocument.userId !== userId) {
+      throw new Error("Unauthorized");
+    }
+
+    const document = await ctx.db.patch(args.id, {
+      summarizationResult: args.summarizationResult,
+    });
+
+    return document;
+  },
+});
+
+export const getSummarizationResult = query({
+  args: { id: v.id("documents") },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+
+    if (!identity) {
+      throw new Error("Not authenticated");
+    }
+
+    const userId = identity.subject;
+
+    const document = await ctx.db.get(args.id);
+
+    if (!document) {
+      throw new Error("Not found");
+    }
+
+    if (document.userId !== userId) {
+      throw new Error("Unauthorized");
+    }
+
+    return document.summarizationResult;
+  },
 });
 
 export const getTrash = query({

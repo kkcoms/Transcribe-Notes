@@ -3,6 +3,8 @@ import React, { useState, useEffect, useContext, useRef } from 'react';
 import { useRecordVoice } from "@/app/(speech)/hooks/useRecordVoice";
 import { IconMicrophone } from "@/app/(speech)/app/components/IconMicrophone";
 import TranscriptionContext from "./TranscriptionContext";
+import { useMutation, useQuery } from "convex/react";
+import { api } from "@/convex/_generated/api";
 
 declare global {
   interface Window {
@@ -11,8 +13,24 @@ declare global {
   }
 }
 
+interface MicrophoneProps {
+  documentId?: string; // Assuming documentId is a string. Adjust the type as necessary.
+}
+const Microphone: React.FC<MicrophoneProps> = ({ documentId }) => {
+  const [summarizationResult, setSummarizationResult] = useState("");
+  const saveSummarizationResult = useMutation(api.documents.saveSummarizationResult);
 
-const Microphone: React.FC = () => {
+  // Assuming you have a query defined in your Convex functions to fetch the summarization result
+  const fetchedSummarizationResult = useQuery(api.documents.getSummarizationResult, documentId ? { id: documentId } : null);
+
+  useEffect(() => {
+    if (fetchedSummarizationResult) {
+      // Process or set the fetched summarization result as needed
+      setSummarizationResult(fetchedSummarizationResult);
+    }
+  }, [fetchedSummarizationResult]);
+
+  
   const [isRecording, setIsRecording] = useState(false);
   const accumulatedFinalTranscript = useRef("");
   const { setLiveTranscription, setFinalTranscription, generateNewSessionId } = useContext(TranscriptionContext);
@@ -45,8 +63,9 @@ const Microphone: React.FC = () => {
   };
 
   const sendTranscriptionForSummarization = async (finalTranscription: string) => {
+    // Assuming documentId is accessible in this scope as a prop
     try {
-      const response = await fetch('/api/summarize', { // Adjust the URL to match your API endpoint
+      const response = await fetch('/api/summarize', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -56,11 +75,13 @@ const Microphone: React.FC = () => {
       if (!response.ok) throw new Error('Network response was not ok');
       const data = await response.json();
       console.log('Summarization result:', data);
-      // Here, you could update the state or context with the summarization result if needed
+      setSummarizationResult(data); // Update the summarization result
+      saveSummarizationResult({ id: documentId, summarizationResult: data.data });
     } catch (error) {
       console.error('Error sending transcription for summarization:', error);
     }
   };
+  
 
   useEffect(() => {
     if (recognition) {
@@ -89,6 +110,7 @@ const Microphone: React.FC = () => {
     }
   }, [recognition]);
 
+  
   // Your existing button style logic
   const buttonStyle: React.CSSProperties = {
     position: 'fixed',
@@ -128,6 +150,9 @@ const Microphone: React.FC = () => {
       <div style={buttonStyle} onClick={toggleRecording}>
         <IconMicrophone />
       </div>
+      <div dangerouslySetInnerHTML={{ __html: fetchedSummarizationResult || '' }} />
+
+      
       {/*<div className="live-transcription-output">
         <p>{accumulatedFinalTranscript.current}</p>
       </div>*/}
@@ -136,3 +161,5 @@ const Microphone: React.FC = () => {
 };
 
 export { Microphone };
+
+

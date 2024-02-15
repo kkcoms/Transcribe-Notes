@@ -67,7 +67,9 @@ const DocumentIdPage = ({
             onChange={onChange}
             initialContent={document.content}
           />
-          <Microphone /> {/* Included Microphone component */}
+          
+          <Microphone documentId={params.documentId} />
+
 
         </div>
       </div>

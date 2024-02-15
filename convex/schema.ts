@@ -13,6 +13,8 @@ export default defineSchema({
     icon: v.optional(v.string()),
     isPublished: v.boolean(),
     noteCreationDateTime: v.optional(v.string()), // Add this line
+    summarizationResult: v.optional(v.string()), // Add this line
+    
   })
   .index("by_user", ["userId"])
   .index("by_user_parent", ["userId", "parentDocument"])

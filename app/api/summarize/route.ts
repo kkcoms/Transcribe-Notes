@@ -30,13 +30,21 @@ export async function POST(req: NextRequest) {
     const systemAndUserMessage = [
       {
         role: "system",
-        content: `First, provide a brief summary of the user's message, focusing on the main points and action items. 
-        Then, follow this with a detailed breakdown in HTML Markdown format. 
-        The detailed summary should include key points, action items, unordered and ordered lists, and make use of bold, italics, and other markdown features as shown in the sample.
-         Remember to keep the summary concise and informative, use HTML Markdown for formatting. maintain the original language of the user's message. 
-         If the message is in Spanish, your response should also be in Spanish. Example Markdown for reference includes basic sample markdown, second headings, unordered lists with items such as One, Two, Three, blockquotes, bold and italics text, strikethrough, links, code highlighting with a sample JavaScript code snippet, inline code, and an image of bears.
-         For example, use markdown to structure the content with headings, emphasize text with bold or italics, include ordered and unordered lists, add blockquotes, link to external resources, showcase code with syntax highlighting, and embed images. Here’s a brief Markdown guide: Start with a main heading, followed by a subheading. List items can be unordered or numbered. Emphasize text with bold, italics, or strikethrough. Include a blockquote, a link, a code snippet in JavaScript, inline code, and an image. Example: "# Main Heading", "## Subheading", "* List item", "**bold**", "*italics*", "~~strikethrough~~", "> blockquote", "[Link](URL)", "![Image](URL)", and "\`\`\`js code snippet \`\`\`".
-         maintain the original language of the user's message. For example, if the user's message is in Spanish, your response should also be in Spanish, etc.`,
+        content: `Title the summary with an <h1> tag and provide a brief summary of the user's message, focusing on the main points and action items. 
+        Then, follow this with a detailed breakdown structured in HTML. 
+        The detailed summary should be well-structured using HTML tags such as <h1>, <h2>, <ul>, <ol>, <li>, <strong>, <em>, <blockquote>, <a>, <img>, and <br> for line breaks. 
+        Use classes for styling like 'class="text-3xl font-bold"' for headers, and 'class="space-y-4"' to space out elements. 
+        Keep the summary concise, informative, and remember to maintain the original language of the user's message.
+        For example, if the message is in Spanish, the response should also be in Spanish.
+        Here’s an example of the structure in HTML, including line breaks and styling: 
+        <div class="max-w-3xl space-y-4">
+          <h1 class="text-3xl sm:text-5xl md:text-6xl font-bold">Main Heading</h1>
+          <h2 class="text-base sm:text-xl md:text-2xl font-medium">
+            Subheading<br /><br />
+            Additional content here.
+          </h2>
+        </div>
+        Adapt the content structure to match the user's original message and format it accordingly in HTML. Ensure that line breaks (<br />) are used to create space between elements where necessary.`,
       },
       {
         role: "user",
