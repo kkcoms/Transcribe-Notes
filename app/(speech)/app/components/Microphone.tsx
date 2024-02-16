@@ -35,12 +35,21 @@ const Microphone: React.FC<MicrophoneProps> = ({ documentId }) => {
   
   const [isRecording, setIsRecording] = useState(false);
   const accumulatedFinalTranscript = useRef("");
-  const { setLiveTranscription, setFinalTranscription, generateNewSessionId } = useContext(TranscriptionContext);
+  const { finalTranscription, setLiveTranscription, setFinalTranscription, generateNewSessionId } = useContext(TranscriptionContext);
   const recognitionActive = useRef(false);
 
   const { startRecording, stopRecording } = useRecordVoice(setFinalTranscription);
 
   const recognition = typeof window !== 'undefined' ? new (window.webkitSpeechRecognition || window.SpeechRecognition)() : null;
+
+  useEffect(() => {
+    // Check if finalTranscription is not empty
+    if (finalTranscription.trim().length > 0) {
+      sendTranscriptionForSummarization(finalTranscription);
+      console.log('Transcription sent for summarization:', finalTranscription);
+    }
+  }, [finalTranscription]); // This effect depends on changes to finalTranscription
+  
 
   const toggleRecording = () => {
     setIsRecording(!isRecording);
@@ -58,13 +67,17 @@ const Microphone: React.FC<MicrophoneProps> = ({ documentId }) => {
         recognition.abort();
         stopRecording();
         setLiveTranscription("");
-        sendTranscriptionForSummarization(accumulatedFinalTranscript.current); // Trigger API call
+        //sendTranscriptionForSummarization(finalTranscription); // Trigger API call
+        console.log('finalTranscription sent for summary:', finalTranscription);
         setFinalTranscription(""); // Clear the final transcription
       }
     }
   };
+  
+  console.log('finalTranscription microphone:',   finalTranscription  );
 
-  const sendTranscriptionForSummarization = async (finalTranscription: string) => {
+
+  const sendTranscriptionForSummarization = async (finalTranscriptionfoSummary: string) => {
     // Assuming documentId is accessible in this scope as a prop
     try {
       const response = await fetch('/api/summarize', {
@@ -72,7 +85,7 @@ const Microphone: React.FC<MicrophoneProps> = ({ documentId }) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ messages: [{ content: finalTranscription }] }),
+        body: JSON.stringify({ messages: [{ content: finalTranscriptionfoSummary }] }),
       });
       if (!response.ok) throw new Error('Network response was not ok');
       const data = await response.json();
