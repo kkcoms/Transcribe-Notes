@@ -43,7 +43,7 @@ const SummarizationComponent: React.FC<SummarizationComponentProps> = ({ documen
   
   console.log("Summarization result:", summarizationResult);
   return (
-    <div dangerouslySetInnerHTML={{ __html: summarizationResult || '' }} />
+    <div  />
   );
 };
 

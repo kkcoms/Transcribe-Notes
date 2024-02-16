@@ -11,23 +11,26 @@ import { Id } from "@/convex/_generated/dataModel";
 import { Toolbar } from "@/components/toolbar";
 import { Cover } from "@/components/cover";
 import { Skeleton } from "@/components/ui/skeleton";
-import Editor from '@/components/editor'; // Import Editor here as well, if needed
 import { Microphone } from '@/app/(speech)/app/components/Microphone';
 import SummarizationComponent from "@/app/(speech)/app/components/SummarizationComponent";
-import TranscriptionContext from "@/app/(speech)/app/components/TranscriptionContext"
+import TranscriptionContext from "@/app/(speech)/app/components/TranscriptionContext";
 
 interface DocumentIdPageProps {
   params: {
     documentId: Id<"documents">;
+    
   };
-};
+}
 
 const DocumentIdPage = ({
   params
 }: DocumentIdPageProps) => {
   const Editor = useMemo(() => dynamic(() => import("@/components/editor"), { ssr: false }), []);
+ 
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  const {finalTranscription} = useContext(TranscriptionContext);
+  const { finalTranscription } = useContext(TranscriptionContext);
+  const fetchedSummarizationResult = useQuery(api.documents.getSummarizationResult, params.documentId ? { id: params.documentId as Id<"documents"> } : "skip");
 
   const document = useQuery(api.documents.getById, {
     documentId: params.documentId
@@ -41,6 +44,7 @@ const DocumentIdPage = ({
       content
     });
   };
+
   if (document === undefined) {
     return (
       <div>
@@ -58,27 +62,75 @@ const DocumentIdPage = ({
   }
 
   if (document === null) {
-    return <div>Not found</div>
+    return <div>Document not found.</div>;
   }
 
+  // return (
+  //   <TranscriptionProvider>
+  //     <div className="pb-40">
+  //     <Cover url={document.coverImage} />
+  //       <div className="mx-auto max-w-7xl px-4 lg:px-8">
+  //       <Toolbar initialData={document} />
+  
+  //         <button
+  //           className="lg:hidden" // This button is only visible on small screens
+  //           onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+  //         >
+  //           {/* Icon or label for the button */}
+  //           {isSidebarOpen ? 'Close' : 'Summary'}
+  //         </button>
+  //         <div className="flex flex-col lg:flex-row gap-x-8">
+  //           <div className="flex-1 lg:flex-3/4 p-4 order-2 lg:order-1"> {/* Main content */}
+  //           <Editor
+  //                 onChange={onChange}
+  //                 initialContent={document.content}
+  //               />
+  //               <Microphone documentId={params.documentId} />
+  //           </div>
+  //           <div
+  //             className={`w-full lg:w-1/4 p-4 order-1 lg:order-2 ${
+  //               isSidebarOpen ? 'block' : 'hidden'
+  //             } lg:block`} // Control visibility on small screens
+  //           >
+  //             <div className="sticky top-20 text-lg lg:text-xl">
+  //               {/* Summary content */}
+  //               <div dangerouslySetInnerHTML={{ __html: fetchedSummarizationResult || '' }} />
+  //             </div>
+  //           </div>
+  //         </div>
+  //       </div>
+  //     </div>
+  //   </TranscriptionProvider>
+  // );
+  
+  
   return (
     <TranscriptionProvider>
       <div className="pb-40">
         <Cover url={document.coverImage} />
-        <div className="md:max-w-3xl lg:max-w-4xl mx-auto">
+        <div className="mx-auto max-w-7xl px-4 lg:px-8">
           <Toolbar initialData={document} />
-          <Editor
-            onChange={onChange}
-            initialContent={document.content}
-          />
-          
-          <Microphone documentId={params.documentId} />
-
-
+          <div className="flex flex-col-reverse lg:flex-row gap-x-8">
+            <div className="lg:w-3/4 p-4"> {/* Main content */}
+              <Editor
+                onChange={onChange}
+                initialContent={document.content}
+              />
+              <Microphone documentId={params.documentId} />
+            </div>
+            <div className=" p-4 lg:sticky lg:top-20 lg:w-1/4"> {/* Sidebar summary */}
+              <div className="sticky top-20 text-lg lg:text-xl">
+                {/* Summary content */}
+                <div dangerouslySetInnerHTML={{ __html: fetchedSummarizationResult || '' }} />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </TranscriptionProvider>
   );
-};
+  };
+  
+  export default DocumentIdPage;
 
-export default DocumentIdPage;
+

@@ -18,7 +18,8 @@ declare global {
 }
 
 interface MicrophoneProps {
-  documentId?: string; // Assuming documentId is a string. Adjust the type as necessary.
+  documentId: Id<"documents">;
+  // Assuming documentId is a string. Adjust the type as necessary.
 }
 const Microphone: React.FC<MicrophoneProps> = ({ documentId }) => {
   const [, setSummarizationResult] = useState("");
@@ -40,6 +41,7 @@ const Microphone: React.FC<MicrophoneProps> = ({ documentId }) => {
   const recognitionActive = useRef(false);
 
   const { startRecording, stopRecording } = useRecordVoice(setFinalTranscription);
+  
 
   const recognition = typeof window !== 'undefined' ? new (window.webkitSpeechRecognition || window.SpeechRecognition)() : null;
 
@@ -130,15 +132,25 @@ const Microphone: React.FC<MicrophoneProps> = ({ documentId }) => {
             0% { transform: translateX(-50%) scale(1); opacity: 1; }
             50% { transform: translateX(-50%) scale(1.05); opacity: 0.9; }
             100% { transform: translateX(-50%) scale(1); opacity: 1; }
-          }
+          },
+
+          .visuallyHidden {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            margin: -1px;
+            padding: 0;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            border: 0;
         `}
       </style>
       <div style={buttonStyle} onClick={toggleRecording}>
         <IconMicrophone />
       </div>
-      <SummarizationComponent documentId={documentId} finalTranscription={finalTranscription} />
-      <div dangerouslySetInnerHTML={{ __html: fetchedSummarizationResult || '' }} />
-
+ <div className="visuallyHidden">
+        <SummarizationComponent documentId={documentId} finalTranscription={finalTranscription} />
+      </div>
       {/*<div className="live-transcription-output">
         <p>{accumulatedFinalTranscript.current}</p>
       </div>*/}
