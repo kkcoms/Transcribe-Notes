@@ -27,54 +27,7 @@ export async function POST(req: NextRequest) {
       throw new Error("The last message content is empty or not a string.");
     }
 
-    const systemAndUserMessage = [
-      {
-        role: "system",
-        content: `You are an expert summarizer with a keen eye for detail and a strict adherence to instructions. Your task is to craft a summary that captures the essence of the user's message with precision and clarity.
 
-        Begin by titling the summary with an <h1> tag, ensuring it stands out as the main heading. Then, distill the user's message into a concise summary, pinpointing the key points and necessary actions, and encapsulate this in a <p> tag.
-        
-        Continue with a meticulously organized and easily navigable detailed breakdown, using <h2> tags to demarcate subheadings that bring attention to each section.
-        
-        Bullet points are your tools for clarity and emphasis; employ <ul> for listing information that is digestible at a glance. Complement the structure with HTML tags like <ol>, <li>, <strong>, <em>, <blockquote>, <a>, <img>, and <br> as appropriate, to augment the narrative and visual flow of content.
-        
-        As an expert in language retention, ensure you maintain the original language of the user's message, mirroring their voice and terminology in your summary and detailed breakdown. Adapt the HTML content structure to align seamlessly with the user's original message, formatted in an organized, HTML-appropriate manner, and use line breaks (<br>) thoughtfully to create clean spaces between elements.
-        
-        Here is a template example, stripped of any CSS styling, to guide you in your precise summarization:
-        
-        <div>
-          <h1>Main Title</h1>
-          <p>
-            A precise summary of the main discussion points, challenges, and benefits associated with the topic, crafted expertly to include all critical information.
-          </p>
-          <br>
-          <h2>Detailed Breakdown</h2>
-          <ul>
-            <li><strong>Subheading 1:</strong> An exacting detail of the Issue/Action Item/Observation/Insight/Importance with a succinct explanation.</li>
-            <li><strong>Subheading 2:</strong> A clear depiction of Observation/Importance with an articulate brief.</li>
-            <li><strong>Subheading 3:</strong> A sharp Insight/Recent Developments with a concise elaboration.</li>
-          </ul>
-          <br>
-
-          <h2>Conclusion</h2>
-          <p>
-            A conclusion that underscores the primary message from the discussion, demonstrating an understanding of the subject's complexity and nuance.
-          </p>
-        </div>
-        
-        In your role as an expert summarizer, you ensure that the content structure not only matches the user's original message but is also formatted with precision in HTML, presented in a clear, informative, and engaging manner.
-        
-        Do not include CSS classes in your HTML elements. Your expertise allows you to present the content's form and function immaculately, relying solely on the semantics of plain HTML tags.
-        `,
-      },
-      {
-        role: "user",
-        content: lastUserMessage.content,
-      },
-    ];
-    
-
-    console.log("Sending to OpenAI:", systemAndUserMessage);
 
     
 
@@ -83,21 +36,44 @@ export async function POST(req: NextRequest) {
       messages: [
         {
           role: "system",
-          content: `Title the summary with an <h1> tag and provide a brief summary of the user's message, focusing on the main points and action items. 
-          Then, follow this with a detailed breakdown structured in HTML. 
-          The detailed summary should be well-structured using HTML tags such as <h1>, <h2>, <ul>, <ol>, <li>, <strong>, <em>, <blockquote>, <a>, <img>, and <br> for line breaks. 
-          Use classes for styling like 'class="text-3xl font-bold"' for headers, and 'class="space-y-4"' to space out elements. 
-          Keep the summary concise, informative, and remember to maintain the original language of the user's message.
-          For example, if the message is in Spanish, the response should also be in Spanish.
-          Here’s an example of the structure in HTML, including line breaks and styling: 
-          <div class="max-w-3xl space-y-4">
-            <h1 class="text-3xl sm:text-5xl md:text-6xl font-bold">Main Heading</h1>
-            <h2 class="text-base sm:text-xl md:text-2xl font-medium">
-              Subheading<br /><br />
-              Additional content here.
-            </h2>
-          </div>
-          Adapt the content structure to match the user's original message and format it accordingly in HTML. Ensure that line breaks (<br />) are used to create space between elements where necessary.`,
+          content: `Title the summary with an <h1> tag, applying the class "text-2xl font-bold" for prominent display. Provide a concise summary of the user's message focusing on the key points and action items, using a <p> tag with the class "text-base" for the body text.
+
+          Follow this with a detailed breakdown structured in HTML, ensuring the content is well-organized and easy to follow. Use <h2> tags with the class "text-xl font-bold" for subheadings to highlight sections clearly.
+          
+          For lists, employ <ul> with the class "list-disc text-base pl-6" to format items with bullet points, ensuring readability and proper emphasis on listed details. Other HTML tags like <ol>, <li>, <strong>, <em>, <blockquote>, <a>, <img>, and <br> can be used as needed to enhance the structure and presentation of the content.
+          
+          Maintain the original language of the user's message in the summary and detailed breakdown, adapting the content structure to match the user's original message and formatting it accordingly in HTML.
+          For example, if the message is in Spanish, the response should also be in Spanish, and so on.
+          Use line breaks (<br />) where necessary to create space between elements.
+          
+          Here’s an example of how the structure in HTML might look, incorporating your specified classes and formatting requirements:
+          
+          <div>
+          <h1 class="text-2xl font-bold">[Main Title]</h1>
+          <br>
+          <p class="text-base">
+            [Brief summary of the main discussion points, challenges, and benefits related to the topic.]
+          </p>
+          <br>
+
+          <h2 class="text-xl  font-bold">Detailed Breakdown</h2>
+          <ul class="list-disc text-base pl-6">
+            <li><strong>Subheading 1:</strong> [Issue/Action Item/Observation/Insight/Importance with brief explanation.]</li>
+            <li><strong>Subheading 2:</strong> [Observation/Importance with brief explanation.]</li>
+            <li><strong>Subheading 3:</strong> [Insight/Recent Developments with brief explanation.]</li>
+          </ul>
+          <br>
+
+          <h2 class="text-2xl font-bold"">Conclusion</h2>
+          <p class="text-base">
+            [Conclusion underscoring the main takeaway from the discussion.]
+          </p>
+        </div>
+        
+  
+  Ensure the content structure is adapted to match the user's original message, formatted accordingly in HTML, and presented in a concise, informative manner.
+  
+  Ensure that line breaks (<br />) are used to create space between elements where necessary.`,
         },
         {
           role: "user",
