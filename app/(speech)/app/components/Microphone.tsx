@@ -100,24 +100,32 @@ const Microphone: React.FC<MicrophoneProps> = ({ documentId }) => {
 
   
   // Your existing button style logic
-  const buttonStyle: React.CSSProperties = {
-    position: 'fixed',
-    bottom: '20px',
-    left: '50%',
-    transform: 'translateX(-50%)',
-    width: '80px', // Increased size for visibility
-    height: '80px',
-    borderRadius: '50%',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: isRecording ? '#ef4444' : '#1E293B',
-    boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2)', // Added shadow for depth
-    transition: 'all 0.3s ease-in-out',
-    cursor: 'pointer',
-    zIndex: 1000,
-    animation: isRecording ? 'pulse 1s infinite' : 'gentlePulse 2s infinite', // Apply animation based on state
-  };
+
+  const buttonClass = `fixed bottom-16 left-1/2 transform -translate-x-1/2 w-20 h-20 rounded-full flex items-center justify-center shadow-lg transition-all duration-300 cursor-pointer z-50 ${
+    isRecording ? 'animate-smooth-pulse bg-red-500' : 'animate-smooth-gentlePulse bg-slate-800 dark:bg-slate-600'
+  }`;
+
+  
+  
+
+  // const buttonStyle: React.CSSProperties = {
+  //   position: 'fixed',
+  //   bottom: '100px',
+  //   left: '50%',
+  //   transform: 'translateX(-50%)',
+  //   width: '80px', // Increased size for visibility
+  //   height: '80px',
+  //   borderRadius: '50%',
+  //   display: 'flex',
+  //   alignItems: 'center',
+  //   justifyContent: 'center',
+  //   backgroundColor: isRecording ? '#ef4444' : '#1E293B',
+  //   boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2)', // Added shadow for depth
+  //   transition: 'all 0.3s ease-in-out',
+  //   cursor: 'pointer',
+  //   zIndex: 1000,
+  //   animation: isRecording ? 'pulse 1s infinite' : 'gentlePulse 2s infinite', // Apply animation based on state
+  // };
 
   return (
     <>
@@ -145,9 +153,9 @@ const Microphone: React.FC<MicrophoneProps> = ({ documentId }) => {
             border: 0;
         `}
       </style>
-      <div style={buttonStyle} onClick={toggleRecording}>
+      <button className={buttonClass} onClick={toggleRecording}>
         <IconMicrophone />
-      </div>
+      </button>
  <div className="visuallyHidden">
         <SummarizationComponent documentId={documentId} finalTranscription={finalTranscription} />
       </div>
