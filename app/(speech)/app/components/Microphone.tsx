@@ -3,9 +3,11 @@ import React, { useState, useEffect, useContext, useRef } from 'react';
 import { useRecordVoice } from "@/app/(speech)/hooks/useRecordVoice";
 import { IconMicrophone } from "@/app/(speech)/app/components/IconMicrophone";
 import TranscriptionContext from "./TranscriptionContext";
-import { useMutation, useQuery } from "convex/react";
+import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Id } from '@/convex/_generated/dataModel';
+import SummarizationComponent from "./SummarizationComponent";
+
 
 
 declare global {
@@ -19,8 +21,7 @@ interface MicrophoneProps {
   documentId?: string; // Assuming documentId is a string. Adjust the type as necessary.
 }
 const Microphone: React.FC<MicrophoneProps> = ({ documentId }) => {
-  const [summarizationResult, setSummarizationResult] = useState("");
-  const saveSummarizationResult = useMutation(api.documents.saveSummarizationResult);
+  const [, setSummarizationResult] = useState("");
 
   // Assuming you have a query defined in your Convex functions to fetch the summarization result
   const fetchedSummarizationResult = useQuery(api.documents.getSummarizationResult, documentId ? { id: documentId as Id<"documents"> } : "skip");
@@ -42,13 +43,6 @@ const Microphone: React.FC<MicrophoneProps> = ({ documentId }) => {
 
   const recognition = typeof window !== 'undefined' ? new (window.webkitSpeechRecognition || window.SpeechRecognition)() : null;
 
-  useEffect(() => {
-    // Check if finalTranscription is not empty
-    if (finalTranscription.trim().length > 0) {
-      sendTranscriptionForSummarization(finalTranscription);
-      console.log('Transcription sent for summarization:', finalTranscription);
-    }
-  }, [finalTranscription]); // This effect depends on changes to finalTranscription
   
 
   const toggleRecording = () => {
@@ -67,42 +61,19 @@ const Microphone: React.FC<MicrophoneProps> = ({ documentId }) => {
         recognition.abort();
         stopRecording();
         setLiveTranscription("");
-        //sendTranscriptionForSummarization(finalTranscription); // Trigger API call
-        console.log('finalTranscription sent for summary:', finalTranscription);
         setFinalTranscription(""); // Clear the final transcription
       }
     }
   };
   
-  console.log('finalTranscription microphone:',   finalTranscription  );
 
 
-  const sendTranscriptionForSummarization = async (finalTranscriptionfoSummary: string) => {
-    // Assuming documentId is accessible in this scope as a prop
-    try {
-      const response = await fetch('/api/summarize', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ messages: [{ content: finalTranscriptionfoSummary }] }),
-      });
-      if (!response.ok) throw new Error('Network response was not ok');
-      const data = await response.json();
-      console.log('Summarization result:', data);
-      setSummarizationResult(data); // Update the summarization result
-      saveSummarizationResult({ id: documentId as Id<"documents">, summarizationResult: data.data });
-    } catch (error) {
-      console.error('Error sending transcription for summarization:', error);
-    }
-  };
-  
 
   useEffect(() => {
     if (recognition) {
       recognition.continuous = true;
       recognition.interimResults = true;
-      recognition.lang = 'es-Mx';
+      recognition.lang = 'es-MX';
 
       recognition.onresult = (event: any) => {
         if (!recognitionActive.current) return;
@@ -165,9 +136,9 @@ const Microphone: React.FC<MicrophoneProps> = ({ documentId }) => {
       <div style={buttonStyle} onClick={toggleRecording}>
         <IconMicrophone />
       </div>
+      <SummarizationComponent documentId={documentId} finalTranscription={finalTranscription} />
       <div dangerouslySetInnerHTML={{ __html: fetchedSummarizationResult || '' }} />
 
-      
       {/*<div className="live-transcription-output">
         <p>{accumulatedFinalTranscript.current}</p>
       </div>*/}

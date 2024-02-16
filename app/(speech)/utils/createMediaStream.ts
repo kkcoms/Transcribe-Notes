@@ -1,3 +1,4 @@
+//createMediaStream.ts
 const getPeakLevel = (analyzer: AnalyserNode): number => {
   const array = new Uint8Array(analyzer.fftSize);
   analyzer.getByteTimeDomainData(array);

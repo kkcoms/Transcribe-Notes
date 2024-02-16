@@ -1,11 +1,6 @@
 import { NextResponse } from "next/server";
 import fs from "fs";
-import path from "path";
-// import * as dotenv from "dotenv";
 import OpenAI from "openai";
-// import { env } from "app/(speech)/app/config/env";
-
-// dotenv.config();
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -16,15 +11,8 @@ export async function POST(req: Request) {
   const base64Audio = body.audio;
   const audio = Buffer.from(base64Audio, "base64");
   
-  // Create a directory path for the tmp directory
-  const tmpDir = path.join(process.cwd(), 'tmp');
-  
-  // Create the tmp directory if it does not exist
-  if (!fs.existsSync(tmpDir)){
-    fs.mkdirSync(tmpDir, { recursive: true });
-  }
-  
-  const filePath = path.join(tmpDir, 'input.mp3');
+  // Use the /tmp directory for temporary storage
+  const filePath = `/tmp/input.mp3`;
 
   try {
     fs.writeFileSync(filePath, audio);

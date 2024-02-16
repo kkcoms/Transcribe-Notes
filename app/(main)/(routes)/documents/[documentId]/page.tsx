@@ -4,7 +4,7 @@
 // Make sure all import statements are at the top of the file
 import { useMutation, useQuery } from "convex/react";
 import dynamic from "next/dynamic";
-import { useMemo } from "react";
+import { useContext, useMemo, useState } from "react";
 import { TranscriptionProvider } from "@/app/(speech)/app/components/TranscriptionContext"; // This is the corrected import path
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
@@ -13,6 +13,8 @@ import { Cover } from "@/components/cover";
 import { Skeleton } from "@/components/ui/skeleton";
 import Editor from '@/components/editor'; // Import Editor here as well, if needed
 import { Microphone } from '@/app/(speech)/app/components/Microphone';
+import SummarizationComponent from "@/app/(speech)/app/components/SummarizationComponent";
+import TranscriptionContext from "@/app/(speech)/app/components/TranscriptionContext"
 
 interface DocumentIdPageProps {
   params: {
@@ -24,6 +26,8 @@ const DocumentIdPage = ({
   params
 }: DocumentIdPageProps) => {
   const Editor = useMemo(() => dynamic(() => import("@/components/editor"), { ssr: false }), []);
+
+  const {finalTranscription} = useContext(TranscriptionContext);
 
   const document = useQuery(api.documents.getById, {
     documentId: params.documentId
