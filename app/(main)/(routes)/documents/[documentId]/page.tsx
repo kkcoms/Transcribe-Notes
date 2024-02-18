@@ -45,6 +45,7 @@ const DocumentIdPage = ({
     });
   };
 
+
   if (document === undefined) {
     return (
       <div>
@@ -126,7 +127,7 @@ const DocumentIdPage = ({
                 <div className="mx-auto max-w-7xl px-4 lg:px-8">
   {/* Existing content */}
   {document.audioFileRef && (
-    <audio controls src={document.audioFileRef    }>
+    <audio controls src={document.audioFileUrl    }>
       Your browser does not support the audio tag.
     </audio>
   )}

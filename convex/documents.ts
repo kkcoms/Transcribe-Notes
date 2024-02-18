@@ -7,21 +7,22 @@ import { Doc, Id } from "./_generated/dataModel";
 import { mutationWithUser } from './utils';
 
 
+// In documents.ts
 export const updateNoteWithAudio = mutationWithUser({
   args: {
     noteId: v.id("documents"),
     audioFileRef: v.string(),
     storageId: v.id('_storage'),
-
   },
   handler: async (ctx, { noteId, audioFileRef, storageId }) => {
-    await ctx.db.patch(noteId, { audioFileRef });
     let fileUrl = (await ctx.storage.getUrl(storageId)) as string;
+    // Ensure the document is updated with both the reference and the URL
+    await ctx.db.patch(noteId, { audioFileRef, audioFileUrl: fileUrl });
     console.log('fileUrl:', fileUrl);
-
-    return { success: true };
+    return { success: true, fileUrl };
   },
 });
+
 
 export const generateUploadUrl = mutationWithUser({
   args: {},
