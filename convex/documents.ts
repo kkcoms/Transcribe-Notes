@@ -11,9 +11,14 @@ export const updateNoteWithAudio = mutationWithUser({
   args: {
     noteId: v.id("documents"),
     audioFileRef: v.string(),
+    storageId: v.id('_storage'),
+
   },
-  handler: async (ctx, { noteId, audioFileRef }) => {
+  handler: async (ctx, { noteId, audioFileRef, storageId }) => {
     await ctx.db.patch(noteId, { audioFileRef });
+    let fileUrl = (await ctx.storage.getUrl(storageId)) as string;
+    console.log('fileUrl:', fileUrl);
+
     return { success: true };
   },
 });

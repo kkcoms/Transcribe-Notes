@@ -7,9 +7,11 @@
 import { useEffect, useState, useRef } from "react";
 import { blobToBase64 } from "@/app/(speech)/utils/blobToBase64";
 import { createMediaStream } from "@/app/(speech)/utils/createMediaStream";
-import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
+
+import { useMutation, useQuery } from "convex/react";
+
 
 
 export const useRecordVoice = (documentId: Id<"documents">, onTranscriptionComplete: any) => {
@@ -97,10 +99,10 @@ export const useRecordVoice = (documentId: Id<"documents">, onTranscriptionCompl
                     body: audioBlob,
                 });
                 const audioFileRef = await result.json(); // Assume this returns a reference to the uploaded audio file
-        
+                
                 // Here, call the mutation to update the note with the audio file reference
                 // Assume you have the note's ID and a mutation set up to update the note
-                await updateNoteWithAudio({ noteId: documentId, audioFileRef: audioFileRef.storageId });
+                await updateNoteWithAudio({ noteId: documentId, audioFileRef: audioFileRef.storageId, storageId: audioFileRef.storageId });
             } catch (error) {
                 console.error("Error uploading audio:", error);
             }

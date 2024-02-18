@@ -16,7 +16,6 @@ export default defineSchema({
     summarizationResult: v.optional(v.string()), // Add this line
     audioFileRef: v.optional(v.string()), // Add this line for the audio file reference    
     audioFileUrl: v.optional(v.string()),
-
   })
   .index("by_user", ["userId"])
   .index("by_user_parent", ["userId", "parentDocument"])
