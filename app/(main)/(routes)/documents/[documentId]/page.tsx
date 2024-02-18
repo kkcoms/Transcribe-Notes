@@ -122,6 +122,17 @@ const DocumentIdPage = ({
               <div className="sticky top-20 text-lg lg:text-xl">
                 {/* Summary content */}
                 <div dangerouslySetInnerHTML={{ __html: fetchedSummarizationResult || '' }} />
+
+                <div className="mx-auto max-w-7xl px-4 lg:px-8">
+  {/* Existing content */}
+  {document.audioFileRef && (
+    <audio controls src={document.audioFileRef    }>
+      Your browser does not support the audio tag.
+    </audio>
+  )}
+  {/* Other content */}
+</div>
+
               </div>
             </div>
           </div>

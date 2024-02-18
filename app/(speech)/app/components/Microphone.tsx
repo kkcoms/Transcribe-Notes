@@ -40,7 +40,7 @@ const Microphone: React.FC<MicrophoneProps> = ({ documentId }) => {
   const { finalTranscription, setLiveTranscription, setFinalTranscription, generateNewSessionId } = useContext(TranscriptionContext);
   const recognitionActive = useRef(false);
 
-  const { startRecording, stopRecording } = useRecordVoice(setFinalTranscription);
+  const { startRecording, stopRecording } = useRecordVoice(documentId,setFinalTranscription);
   
 
   const recognition = typeof window !== 'undefined' ? new (window.webkitSpeechRecognition || window.SpeechRecognition)() : null;

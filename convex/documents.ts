@@ -4,6 +4,27 @@ import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
 import { Doc, Id } from "./_generated/dataModel";
 
+import { mutationWithUser } from './utils';
+
+
+export const updateNoteWithAudio = mutationWithUser({
+  args: {
+    noteId: v.id("documents"),
+    audioFileRef: v.string(),
+  },
+  handler: async (ctx, { noteId, audioFileRef }) => {
+    await ctx.db.patch(noteId, { audioFileRef });
+    return { success: true };
+  },
+});
+
+export const generateUploadUrl = mutationWithUser({
+  args: {},
+  handler: async (ctx) => {
+    return await ctx.storage.generateUploadUrl();
+  },
+});
+
 export const archive = mutation({
   args: { id: v.id("documents") },
   handler: async (ctx, args) => {
@@ -107,6 +128,7 @@ export const create = mutation({
       isPublished: false,
       noteCreationDateTime: new Date().toISOString(), // Use the current date and time
       summarizationResult: "", // Initialize the summarization result
+      audioFileUrl: "" as string, // Fix the type error by explicitly casting to string
     });
 
     return document;
