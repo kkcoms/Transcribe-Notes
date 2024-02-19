@@ -56,6 +56,9 @@ dependencies:
   convex:
     specifier: ^1.9.0
     version: 1.9.0(@clerk/clerk-react@4.30.5)(react-dom@18.2.0)(react@18.2.0)
+  convex-helpers:
+    specifier: ^0.1.20
+    version: 0.1.20(convex@1.9.0)(react@18.2.0)(zod@3.22.4)
   dotenv:
     specifier: ^16.4.4
     version: 16.4.4
@@ -3952,6 +3955,23 @@ packages:
 
   /convert-source-map@1.9.0:
     resolution: {integrity: sha512-ASFBup0Mz1uyiIjANan1jzLQami9z1PoYSZCiiYW2FczPbenXc45FZdBZLzOT+r6+iciuEModtmCti+hjaAk0A==}
+    dev: false
+
+  /convex-helpers@0.1.20(convex@1.9.0)(react@18.2.0)(zod@3.22.4):
+    resolution: {integrity: sha512-05NcAPUg3TTNjT9e4xO2TwomUQXomk9KDT1Rni5R0f7d9d19rLPILSYa/lwU9P2YhpNAqVzJ0v0qTmKL75qCog==}
+    peerDependencies:
+      convex: ^1.8.0
+      react: ^17.0.2 || ^18.0.0
+      zod: ^3.22.4
+    peerDependenciesMeta:
+      react:
+        optional: true
+      zod:
+        optional: true
+    dependencies:
+      convex: 1.9.0(@clerk/clerk-react@4.30.5)(react-dom@18.2.0)(react@18.2.0)
+      react: 18.2.0
+      zod: 3.22.4
     dev: false
 
   /convex@1.9.0(@clerk/clerk-react@4.30.5)(react-dom@18.2.0)(react@18.2.0):

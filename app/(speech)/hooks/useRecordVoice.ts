@@ -15,10 +15,9 @@ import { useMutation, useQuery } from "convex/react";
 
 
 export const useRecordVoice = (documentId: Id<"documents">, onTranscriptionComplete: any) => {
-    const generateUploadUrl = useMutation<any>(api.documents.generateUploadUrl);
-    const updateNoteWithAudio = useMutation<any>(api.documents.updateNoteWithAudio);
-      
-    
+    const generateUploadUrl = useMutation(api.documents.generateUploadUrl);
+    const updateNoteWithAudio = useMutation(api.documents.updateNoteWithAudio); // Correctly get the mutation function
+
     const [text, setText] = useState("");
     const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(
         null
