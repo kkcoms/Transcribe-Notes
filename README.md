@@ -141,3 +141,4 @@ npx convex dev
 npm run dev
 ```
 # Transcribe-Notes
+# Transcribed-app-Mexico
