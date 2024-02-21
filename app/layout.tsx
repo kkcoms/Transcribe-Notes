@@ -15,7 +15,7 @@ const raleway = Raleway({
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'Journo',
+  title: 'Voicely',
   description: 'The connected workspace where better, faster work happens.',
   icons: {
     icon: [
@@ -48,7 +48,7 @@ export default function RootLayout({
               defaultTheme="system"
               enableSystem
               disableTransitionOnChange
-              storageKey="Journo-theme-2"
+              storageKey="Voicely-theme-2"
             >
               <Toaster position="bottom-center" />
               <ModalProvider />

@@ -15,11 +15,11 @@ export const Heading = () => {
     <div className="max-w-3xl space-y-4">
       <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold">
       Voice to Text, Ideas to Action.
-      Welcome to <span className="underline">Journo</span>
+      Welcome to <span className="underline">Voicely</span>
       </h1>
       <h3 className="text-base sm:text-xl md:text-2xl font-medium">
       <br />
-      Journo is where clarity meets productivity
+      Voicely is where clarity meets productivity
         <br />
       transforming your spoken words into structured documents effortlessly.      
         </h3>
@@ -31,7 +31,7 @@ export const Heading = () => {
       {isAuthenticated && !isLoading && (
         <Button asChild>
           <Link href="/documents">
-            Enter Journo
+            Enter Voicely
             <ArrowRight className="h-4 w-4 ml-2" />
           </Link>
         </Button>
@@ -39,7 +39,7 @@ export const Heading = () => {
       {!isAuthenticated && !isLoading && (
         <SignInButton mode="modal">
           <Button>
-            Get Journo free
+            Get Voicely free
             <ArrowRight className="h-4 w-4 ml-2" />
           </Button>
         </SignInButton>

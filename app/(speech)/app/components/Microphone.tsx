@@ -75,7 +75,7 @@ const Microphone: React.FC<MicrophoneProps> = ({ documentId }) => {
     if (recognition) {
       recognition.continuous = true;
       recognition.interimResults = true;
-      recognition.lang = 'es-MX';
+      recognition.lang = 'en-US';
 
       recognition.onresult = (event: any) => {
         if (!recognitionActive.current) return;
